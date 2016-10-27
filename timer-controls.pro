@@ -5,8 +5,8 @@ QT += qml quick widgets
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    timerprogram.cpp \
-    timer.cpp
+    entrymodel.cpp \
+    stopwatch.cpp
 
 RESOURCES += \
     qml/qml.qrc
@@ -21,5 +21,5 @@ DISTFILES += \
     qml/main.qml
 
 HEADERS += \
-    timerprogram.h \
-    timer.h
+    entrymodel.h \
+    stopwatch.h

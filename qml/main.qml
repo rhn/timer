@@ -10,10 +10,14 @@ ApplicationWindow {
     visible: true
     id: timer
     property bool running: false
-    onRunningChanged: timerProgram.runningChanged(running)
+    onRunningChanged: stopWatch.runningChanged(running)
 
-    TimerProgram { // make this a context property?
-        id: timerProgram
+    StopWatch { // make this a context property?
+        id: stopWatch
+    }
+
+    TimeLogger {
+        id: timeLogger
     }
 
     ColumnLayout {
@@ -34,14 +38,15 @@ ApplicationWindow {
 
             Label {
                 id: label2
-                text: timerProgram.format_time(timerProgram.currentTime, "h:mm:ss")
+                text: stopWatch.format_time(stopWatch.currentTime, "h:mm:ss")
                 Layout.alignment: Qt.AlignRight
                 Layout.fillWidth: true
             }
 
             TextField {
                 id: elapsedEdit
-                text: (timerProgram.currentTime / 1000 / 60 / 60).toFixed(3)
+                text: (stopWatch.currentTime / 1000 / 60 / 60).toFixed(3)
+                horizontalAlignment: TextInput.AlignRight
             }
 
             Button {
@@ -59,7 +64,7 @@ ApplicationWindow {
             Layout.fillWidth: true
 
             TextField {
-                id: textField1
+                id: description
                 Layout.fillWidth: true
                 placeholderText: qsTr("Activity description")
             }
@@ -67,12 +72,31 @@ ApplicationWindow {
             Button {
                 id: button2
                 text: qsTr("Add")
+                onClicked: {
+                    timer.running = false
+                    stopWatch.tableModel.add(stopWatch.currentTime, description.text)
+                    stopWatch.clear()
+                }
             }
         }
         TableView {
             id: tableView1
             Layout.fillHeight: true
             Layout.fillWidth: true
+            TableViewColumn {
+                role: "description"
+                title: "description"
+            }
+            TableViewColumn {
+                role: "time"
+                title: "time"
+            }
+            TableViewColumn {
+                role: "start"
+                title: "start"
+            }
+
+            //model: timerProgram.tableModel
         }
         states: State {
             name: "running"

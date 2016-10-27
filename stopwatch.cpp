@@ -1,12 +1,12 @@
-#include "timerprogram.h"
+#include "stopwatch.h"
 
 Q_LOGGING_CATEGORY(timer, "qml")
 
-TimerProgram::TimerProgram(QObject *parent) : QObject(parent) {
+StopWatch::StopWatch(QObject *parent) : QObject(parent) {
     connect(&this->ticker, SIGNAL(timeout()), this, SLOT(on_tick()));
 }
 
-void TimerProgram::runningChanged(const bool running) {
+void StopWatch::runningChanged(const bool running) {
     if (running) {
         this->timekeep.start();
         this->ticker.start(1000);
@@ -17,12 +17,21 @@ void TimerProgram::runningChanged(const bool running) {
     }
 }
 
-QString TimerProgram::format_time(const int milliseconds, const QString format) {
+void StopWatch::clear() {
+    if (this->ticker.isActive()) {
+        qCWarning(timer) << "Clearing while timer is running";
+    }
+    this->last_time = 0;
+    this->current_time = 0;
+    emit currentTimeChanged(this->current_time);
+}
+
+QString StopWatch::format_time(const int milliseconds, const QString format) {
     QTime time = QTime::fromMSecsSinceStartOfDay(milliseconds);
     return time.toString(format);
 }
 
-void TimerProgram::on_tick() {
+void StopWatch::on_tick() {
     this->current_time = this->last_time + this->timekeep.elapsed();
     emit currentTimeChanged(this->current_time);
 }

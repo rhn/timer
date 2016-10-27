@@ -2,12 +2,14 @@
 #include <QQmlApplicationEngine>
 #include <QQmlComponent>
 
-#include "timerprogram.h"
+#include "stopwatch.h"
+#include "entrymodel.h"
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv); // QGuiApplication will not style properly
-    qmlRegisterType<TimerProgram>("timer", 0,1, "TimerProgram");
+    qmlRegisterType<StopWatch>("timer", 0,1, "StopWatch");
+    qmlRegisterType<EntryModel>("timer", 0,1, "TimeLogger");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
