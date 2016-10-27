@@ -6,10 +6,6 @@
 #include <QTime>
 #include <QTimer>
 
-#include "entrymodel.h"
-
-Q_DECLARE_LOGGING_CATEGORY(timer)
-
 class StopWatch : public QObject
 {
     Q_OBJECT

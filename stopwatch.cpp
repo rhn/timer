@@ -1,6 +1,6 @@
 #include "stopwatch.h"
+#include "logging.h"
 
-Q_LOGGING_CATEGORY(timer, "qml")
 
 StopWatch::StopWatch(QObject *parent) : QObject(parent) {
     connect(&this->ticker, SIGNAL(timeout()), this, SLOT(on_tick()));

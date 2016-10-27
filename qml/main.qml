@@ -17,7 +17,7 @@ ApplicationWindow {
     }
 
     TimeLogger {
-      //  id: timeLogger
+        id: timeLogger
     }
 
     ColumnLayout {
@@ -85,18 +85,25 @@ ApplicationWindow {
             TableViewColumn {
                 role: "description"
                 title: "description"
+                delegate: Label {
+                    text: styleData.value
+                }
             }
             TableViewColumn {
                 role: "time"
                 title: "time"
+                delegate: Label {
+                    text: styleData.value
+                }
             }
             TableViewColumn {
                 role: "start"
                 title: "start"
             }
 
-            //model: timerProgram.tableModel
+            model: timeLogger
         }
+
         states: State {
             name: "running"
             when: stopWatch.running

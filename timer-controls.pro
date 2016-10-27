@@ -22,4 +22,5 @@ DISTFILES += \
 
 HEADERS += \
     entrymodel.h \
-    stopwatch.h
+    stopwatch.h \
+    logging.h
