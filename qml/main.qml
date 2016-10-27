@@ -8,16 +8,16 @@ import timer 0.1
 ApplicationWindow {
     title: qsTr("Timer")
     visible: true
-    id: timer
-    property bool running: false
-    onRunningChanged: stopWatch.runningChanged(running)
+    id: timerApp
 
     StopWatch { // make this a context property?
         id: stopWatch
+        property bool running: false
+        onRunningChanged: stopWatch._runningChanged(running)
     }
 
     TimeLogger {
-        id: timeLogger
+      //  id: timeLogger
     }
 
     ColumnLayout {
@@ -33,7 +33,7 @@ ApplicationWindow {
             Button {
                 id: startStopBtn
                 text: qsTr("Start")
-                onClicked: timer.running = true
+                onClicked: stopWatch.running = true
             }
 
             Label {
@@ -53,10 +53,9 @@ ApplicationWindow {
                 id: runBtn
                 text: qsTr("Running")
                 checkable: true
-                checked: timer.running
-                onCheckedChanged: timer.running = checked
+                checked: stopWatch.running
+                onCheckedChanged: stopWatch.running = checked
             }
-
         }
 
         ColumnLayout {
@@ -73,8 +72,8 @@ ApplicationWindow {
                 id: button2
                 text: qsTr("Add")
                 onClicked: {
-                    timer.running = false
-                    stopWatch.tableModel.add(stopWatch.currentTime, description.text)
+                    stopWatch.running = false
+                    timeLogger.add(stopWatch.currentTime, description.text)
                     stopWatch.clear()
                 }
             }
@@ -100,11 +99,11 @@ ApplicationWindow {
         }
         states: State {
             name: "running"
-            when: running
+            when: stopWatch.running
             PropertyChanges {
                 target: startStopBtn
                 text: qsTr("Stop")
-                onClicked: timer.running = false
+                onClicked: stopWatch.running = false
             }
             PropertyChanges {
                 target: elapsedEdit

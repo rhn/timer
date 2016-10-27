@@ -6,7 +6,7 @@ StopWatch::StopWatch(QObject *parent) : QObject(parent) {
     connect(&this->ticker, SIGNAL(timeout()), this, SLOT(on_tick()));
 }
 
-void StopWatch::runningChanged(const bool running) {
+void StopWatch::_runningChanged(const bool running) {
     if (running) {
         this->timekeep.start();
         this->ticker.start(1000);
