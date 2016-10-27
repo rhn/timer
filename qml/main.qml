@@ -85,15 +85,12 @@ ApplicationWindow {
             TableViewColumn {
                 role: "description"
                 title: "description"
-                delegate: Label {
-                    text: styleData.value
-                }
             }
             TableViewColumn {
                 role: "time"
                 title: "time"
                 delegate: Label {
-                    text: styleData.value
+                    text: (styleData.value / 1000 / 60 / 60).toFixed(3)
                 }
             }
             TableViewColumn {

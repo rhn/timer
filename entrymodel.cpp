@@ -3,24 +3,24 @@
 
 Q_LOGGING_CATEGORY(timer, "qml")
 
-EntryModel::EntryModel(QObject *parent) : QAbstractTableModel(parent) {
-    this->entries.push_back(new Entry(1, "sffe"));
-}
+EntryModel::EntryModel(QObject *parent) : QAbstractTableModel(parent) {}
 
-/*void EntryModel::add_entry(Entry* e) {
+void EntryModel::add_entry(Entry* e) {
+    qCDebug(timer) << "add" << e->time_ms;
     this->entries.push_back(e);
     this->insertRow(0, QModelIndex());
 }
 
 bool EntryModel::insertRows(int row, int count, const QModelIndex &parent) {
+    qCDebug(timer) << "insert" << row << count;
     if (row != 0 || count != 1) { // supports only inserting in the front
         return false;
     }
-    this->beginInsertRows(parent, row, row + count + 1);
+    this->beginInsertRows(parent, row, row + count - 1);
     this->endInsertRows();
     return true;
 }
-*/
+
 int EntryModel::rowCount(const QModelIndex &parent) const {
     (void)parent;
     qCDebug(timer) << "rowCount" << this->entries.size();
@@ -33,7 +33,7 @@ int EntryModel::columnCount(const QModelIndex &parent) const {
 }
 
 QVariant EntryModel::data(const QModelIndex &index, int role) const {
-    Entry *e = this->entries[index.row()];
+    Entry *e = this->entries[this->entries.size() - index.row() - 1]; // vector grows in the back; items need to grow on the top
     qCDebug(timer) << "data" << index.row() << index.column() << role;
     switch (role) {
         case Entry::roles::DESCRIPTION: {

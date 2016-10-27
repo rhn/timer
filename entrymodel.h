@@ -35,13 +35,13 @@ public:
                 {Entry::roles::START, "start"}};
     }
 
-  //  void add_entry(Entry *e);
+    void add_entry(Entry *e);
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent) const;
-    //bool insertRows(int row, int count, const QModelIndex &parent);
+    bool insertRows(int row, int count, const QModelIndex &parent);
     QVariant data(const QModelIndex &index, int role) const;
     Q_INVOKABLE void add(const int ms, const QString description) {
-    //    return add_entry(new Entry(ms, description));
+        return add_entry(new Entry(ms, description));
     }
 signals:
 
