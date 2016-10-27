@@ -34,7 +34,10 @@ public:
                 {Entry::roles::DESCRIPTION, "description"},
                 {Entry::roles::START, "start"}};
     }
-
+    Qt::ItemFlags flags(const QModelIndex &index) const {
+        (void)index;
+        return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    }
     void add_entry(Entry *e);
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent) const;

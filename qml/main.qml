@@ -89,8 +89,10 @@ ApplicationWindow {
             TableViewColumn {
                 role: "time"
                 title: "time"
-                delegate: Label {
-                    text: (styleData.value / 1000 / 60 / 60).toFixed(3)
+                delegate: EditableCell {
+                    function formatArg(arg) {
+                        return (styleData.value / 1000 / 60 / 60).toFixed(3)
+                    }
                 }
             }
             TableViewColumn {
