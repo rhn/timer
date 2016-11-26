@@ -8,6 +8,10 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv); // QGuiApplication will not style properly
+//    QApplication::setApplicationName("MyApp");
+  //  QApplication::setOrganizationName("Me");
+
+
     qmlRegisterType<StopWatch>("timer", 0,1, "StopWatch");
     qmlRegisterType<EntryModel>("timer", 0,1, "TimeLogger");
 

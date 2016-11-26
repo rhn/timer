@@ -38,14 +38,22 @@ public:
         (void)index;
         return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     }
+    // internal
     void add_entry(Entry *e);
+    //void save_data();
+
+    // for QAbstractTableModel
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent) const;
     bool insertRows(int row, int count, const QModelIndex &parent);
     QVariant data(const QModelIndex &index, int role) const;
+    // for QML
     Q_INVOKABLE void add(const int ms, const QString description) {
         return add_entry(new Entry(ms, description));
     }
+    /*Q_INVOKABLE void save() {
+        save_data();
+    }*/
 signals:
 
 public slots:

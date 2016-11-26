@@ -8,6 +8,9 @@ Item {
     function formatArg(arg) {
         return arg;
     }
+    function decode(text) {
+        return text;
+    }
 
     Item {
         id: read
@@ -33,6 +36,7 @@ Item {
         text: formatArg(styleData.value)
         anchors.fill: parent
         onEditingFinished: {
+            //styleData.value = decode(text)
             cell.editing = false
         }
     }

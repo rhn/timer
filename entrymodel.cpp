@@ -1,5 +1,13 @@
+#include <QStandardPaths>
+#include <QDir>
+
+//#include <sqlpp11/sqlite3/sqlite3.h>
 #include "entrymodel.h"
 #include "logging.h"
+//#include "timer_db.h"
+
+//using namespace TimerDB;
+//namespace sql = sqlpp::sqlite3;
 
 Q_LOGGING_CATEGORY(timer, "qml")
 
@@ -10,6 +18,26 @@ void EntryModel::add_entry(Entry* e) {
     this->entries.push_back(e);
     this->insertRow(0, QModelIndex());
 }
+/*
+static void make_db() {
+    QString data_dir_path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QDir::root().mkpath(data_dir_path);
+    sql::connection_config config;
+    config.path_to_database = (data_dir_path + "/db.sql").toStdString();
+    config.flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;
+    config.debug = true;
+    sql::connection db(config);
+    QFile schema(":schema/timer.sql");
+    db.execute(schema.readAll().toStdString());
+}
+
+void EntryModel::save_data() {
+
+
+    for (Entry* e : this->entries) {
+
+    }
+}*/
 
 bool EntryModel::insertRows(int row, int count, const QModelIndex &parent) {
     qCDebug(timer) << "insert" << row << count;

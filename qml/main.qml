@@ -45,6 +45,7 @@ ApplicationWindow {
 
             TextField {
                 id: elapsedEdit
+                readOnly: stopWatch.running
                 text: (stopWatch.currentTime / 1000 / 60 / 60).toFixed(3)
                 horizontalAlignment: TextInput.AlignRight
             }
@@ -74,7 +75,9 @@ ApplicationWindow {
                 onClicked: {
                     stopWatch.running = false
                     timeLogger.add(stopWatch.currentTime, description.text)
+                    description.text = "";
                     stopWatch.clear()
+                    timeLogger.save();
                 }
             }
         }
@@ -82,6 +85,7 @@ ApplicationWindow {
             id: tableView1
             Layout.fillHeight: true
             Layout.fillWidth: true
+
             TableViewColumn {
                 role: "description"
                 title: "description"
@@ -91,7 +95,10 @@ ApplicationWindow {
                 title: "time"
                 delegate: EditableCell {
                     function formatArg(arg) {
-                        return (styleData.value / 1000 / 60 / 60).toFixed(3)
+                        return (styleData.value / 1000 / 60 / 60).toFixed(3);
+                    }
+                    function decode(text) {
+                        return text * 1000 * 60 * 60;
                     }
                 }
             }
@@ -100,7 +107,16 @@ ApplicationWindow {
                 title: "start"
             }
 
+
             model: timeLogger
+        }
+
+        Button {
+            id: saveBtn
+            text: qsTr("Save")
+            onClicked: {
+                timeLogger.save();
+            }
         }
 
         states: State {
