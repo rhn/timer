@@ -1,13 +1,14 @@
 #include <QStandardPaths>
 #include <QDir>
 
-//#include <sqlpp11/sqlite3/sqlite3.h>
+#include <sqlpp11/sqlite3/sqlite3.h>
+#include <sqlpp11/sqlpp11.h>
 #include "entrymodel.h"
 #include "logging.h"
-//#include "timer_db.h"
+#include "timer_db.h"
 
-//using namespace TimerDB;
-//namespace sql = sqlpp::sqlite3;
+using namespace TimerDB;
+namespace sql = sqlpp::sqlite3;
 
 Q_LOGGING_CATEGORY(timer, "qml")
 
@@ -18,26 +19,39 @@ void EntryModel::add_entry(Entry* e) {
     this->entries.push_back(e);
     this->insertRow(0, QModelIndex());
 }
-/*
-static void make_db() {
+
+static sql::connection *get_db() {
     QString data_dir_path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     QDir::root().mkpath(data_dir_path);
     sql::connection_config config;
-    config.path_to_database = (data_dir_path + "/db.sql").toStdString();
-    config.flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;
+    bool create = false;
+    QString db_path(data_dir_path + "/db.sql");
+    config.path_to_database = db_path.toStdString();
+    config.flags = SQLITE_OPEN_READWRITE;
+    if (!QFile(db_path).exists()) {
+        config.flags |= SQLITE_OPEN_CREATE;
+        create = true;
+    }
     config.debug = true;
-    sql::connection db(config);
-    QFile schema(":schema/timer.sql");
-    db.execute(schema.readAll().toStdString());
+    sql::connection *db = new sql::connection(config);
+    if (create) {
+        QFile schema(":/timer.sql");
+        schema.open(QIODevice::ReadOnly);
+        db->execute(schema.readAll().toStdString());
+        schema.close();
+    }
+    return db;
 }
 
 void EntryModel::save_data() {
-
-
+    sql::connection *db = get_db();
+    Entries ent_table;
     for (Entry* e : this->entries) {
-
+        auto param = sql::insert_or_replace_into(ent_table).set(ent_table.id = sqlpp::tvin(e->id));
+        e->id = (*db)(param);
     }
-}*/
+    delete db;
+}
 
 bool EntryModel::insertRows(int row, int count, const QModelIndex &parent) {
     qCDebug(timer) << "insert" << row << count;

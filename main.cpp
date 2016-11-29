@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 //    QApplication::setApplicationName("MyApp");
   //  QApplication::setOrganizationName("Me");
 
-
+    qDebug() << "defegegege";
     qmlRegisterType<StopWatch>("timer", 0,1, "StopWatch");
     qmlRegisterType<EntryModel>("timer", 0,1, "TimeLogger");
 

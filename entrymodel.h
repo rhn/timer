@@ -7,7 +7,8 @@
 
 class Entry {
 public:
-    Entry(const int time_ms, const QString description) :
+    Entry(const int time_ms, const QString description, const int id=0) :
+        id(id),
         time_ms(time_ms),
         description(description)
     {}
@@ -19,6 +20,7 @@ public:
     };
 
     static const int columns_count = 3;
+    int id;
     int time_ms;
     QString description;
 };
@@ -40,7 +42,7 @@ public:
     }
     // internal
     void add_entry(Entry *e);
-    //void save_data();
+    void save_data();
 
     // for QAbstractTableModel
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -51,9 +53,9 @@ public:
     Q_INVOKABLE void add(const int ms, const QString description) {
         return add_entry(new Entry(ms, description));
     }
-    /*Q_INVOKABLE void save() {
+    Q_INVOKABLE void save() {
         save_data();
-    }*/
+    }
 signals:
 
 public slots:
