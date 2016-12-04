@@ -2,15 +2,20 @@
 #define ENTRYMODEL_H
 
 #include <vector>
+#include <chrono>
 #include <QAbstractTableModel>
+
+
+typedef std::chrono::time_point<std::chrono::system_clock> time_point;
 
 
 class Entry {
 public:
-    Entry(const int time_ms, const QString description, const int id=0) :
+    Entry(const int time_ms, const QString description, const int id=0, const time_point start_time=std::chrono::system_clock::now()) :
         id(id),
         time_ms(time_ms),
-        description(description)
+        description(description),
+        start_time(start_time)
     {}
 
     enum roles {
@@ -23,6 +28,7 @@ public:
     int id;
     int time_ms;
     QString description;
+    time_point start_time;
 };
 
 class EntryModel : public QAbstractTableModel

@@ -25,7 +25,7 @@ static sql::connection *get_db() {
     QDir::root().mkpath(data_dir_path);
     sql::connection_config config;
     bool create = false;
-    QString db_path(data_dir_path + "/db.sql");
+    QString db_path(data_dir_path + "/entries.db");
     config.path_to_database = db_path.toStdString();
     config.flags = SQLITE_OPEN_READWRITE;
     if (!QFile(db_path).exists()) {
@@ -47,7 +47,11 @@ void EntryModel::save_data() {
     sql::connection *db = get_db();
     Entries ent_table;
     for (Entry* e : this->entries) {
-        auto param = sql::insert_or_replace_into(ent_table).set(ent_table.id = sqlpp::tvin(e->id));
+        auto param = sql::insert_or_replace_into(ent_table) \
+                .set(ent_table.id = sqlpp::tvin(e->id),
+                     ent_table.description = e->description.toStdString(),
+                     ent_table.duration = e->time_ms,
+                     ent_table.startTime = e->start_time);
         e->id = (*db)(param);
     }
     delete db;
