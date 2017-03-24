@@ -12,7 +12,7 @@ Functionality
 
 - Starting a timer and resume it.
 - Displaying a table of previous timers in this session.
-- Saving the currently visible entries to a local database
+- Saving the currently visible entries to a local database (after each add)
 
 Requirements
 ------------
@@ -42,6 +42,7 @@ TODO
 
 - load saved data
 - display start time
+- save currently running timer periodically
 
 ### Less important
 
