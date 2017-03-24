@@ -37,6 +37,11 @@ Installation
 
 *TODO*
 
+Quirks
+------
+
+To see previous entries as well as current time, load table Entries via sqlite3
+
 TODO
 ----
 
