@@ -26,17 +26,11 @@
 #include "timer_db.h"
 
 using namespace TimerDB;
+using namespace std::chrono;
 namespace sql = sqlpp::sqlite3;
 
 Q_LOGGING_CATEGORY(timer, "qml")
 
-EntryModel::EntryModel(QObject *parent) : QAbstractTableModel(parent) {}
-
-void EntryModel::add_entry(Entry* e) {
-    qCDebug(timer) << "add" << e->time_ms;
-    this->entries.push_back(e);
-    this->insertRow(0, QModelIndex());
-}
 
 static sql::connection *get_db() {
     QString data_dir_path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
@@ -61,16 +55,36 @@ static sql::connection *get_db() {
     return db;
 }
 
+EntryModel::EntryModel(QObject *parent) : QAbstractTableModel(parent) {
+    sql::connection *db = get_db();
+    Entries ent_table;
+    Entry::time_point startDate = std::chrono::system_clock::now() - std::chrono::hours(24 * 32);
+
+    for (const auto& e : (*db)(select(all_of(ent_table)).from(ent_table).where(ent_table.startTime > startDate))) {
+        sqlpp::chrono::microsecond_point t = e.startTime;
+        Entry::time_point u = time_point_cast<Entry::time_point::duration>(t);
+        Entry en((int)e.duration, ((std::string)e.description).c_str(), (int)e.id, u);
+        add_entry(en);
+    }
+    delete db;
+}
+
+void EntryModel::add_entry(Entry& e) {
+    qCDebug(timer) << "add" << e.time_ms;
+    this->entries.emplace_back(e);
+    this->insertRow(0, QModelIndex());
+}
+
 void EntryModel::save_data() {
     sql::connection *db = get_db();
     Entries ent_table;
-    for (Entry* e : this->entries) {
+    for (Entry& e : this->entries) {
         auto param = sql::insert_or_replace_into(ent_table) \
-                .set(ent_table.id = sqlpp::tvin(e->id),
-                     ent_table.description = e->description.toStdString(),
-                     ent_table.duration = e->time_ms,
-                     ent_table.startTime = e->start_time);
-        e->id = (*db)(param);
+                .set(ent_table.id = sqlpp::tvin(e.id),
+                     ent_table.description = e.description.toStdString(),
+                     ent_table.duration = e.time_ms,
+                     ent_table.startTime = e.start_time);
+        e.id = (*db)(param);
     }
     delete db;
 }
@@ -97,7 +111,7 @@ int EntryModel::columnCount(const QModelIndex &parent) const {
 }
 
 QVariant EntryModel::data(const QModelIndex &index, int role) const {
-    Entry *e = this->entries[this->entries.size() - index.row() - 1]; // vector grows in the back; items need to grow on the top
+    const Entry *e = &this->entries[this->entries.size() - index.row() - 1]; // vector grows in the back; items need to grow on the top
     qCDebug(timer) << "data" << index.row() << index.column() << role;
     switch (role) {
         case Entry::roles::DESCRIPTION: {

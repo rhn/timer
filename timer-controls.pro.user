@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.0.3, 2016-11-29T14:18:17. -->
+<!-- Written by QtCreator 4.5.0, 2018-01-21T10:45:43. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -76,7 +76,7 @@
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">QtProjectManager.QMakeBuildStep</value>
       <value type="bool" key="QtProjectManager.QMakeBuildStep.LinkQmlDebuggingLibrary">true</value>
-      <value type="QString" key="QtProjectManager.QMakeBuildStep.QMakeArguments">INCLUDEPATH+=/home/rhn/play/timer/local/include INCLUDEPATH+=/home/rhn/play/timer/hinnant_date LIBS+=-L/home/rhn/play/timer/local/lib</value>
+      <value type="QString" key="QtProjectManager.QMakeBuildStep.QMakeArguments">INCLUDEPATH+=/home/rhn/play/timer/local/include INCLUDEPATH+=/home/rhn/play/timer/hinnant_date/include/date LIBS+=-L/home/rhn/play/timer/local/lib</value>
       <value type="bool" key="QtProjectManager.QMakeBuildStep.QMakeForced">false</value>
       <value type="bool" key="QtProjectManager.QMakeBuildStep.SeparateDebugInfo">false</value>
       <value type="bool" key="QtProjectManager.QMakeBuildStep.UseQtQuickCompiler">false</value>
@@ -122,7 +122,6 @@
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges">
      <value type="QString">QMAKE_LIBDIR=/home/rhn/play/timer/local</value>
-     <value type="QString">INCLUDEPATH=/home/rhn/play/timer/local/include</value>
     </valuelist>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Debug</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>

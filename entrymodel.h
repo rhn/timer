@@ -24,11 +24,10 @@
 #include <QAbstractTableModel>
 
 
-typedef std::chrono::time_point<std::chrono::system_clock> time_point;
-
-
 class Entry {
 public:
+    typedef std::chrono::time_point<std::chrono::system_clock> time_point;
+
     Entry(const int time_ms, const QString description, const int id=0, const time_point start_time=std::chrono::system_clock::now()) :
         id(id),
         time_ms(time_ms),
@@ -52,7 +51,7 @@ public:
 class EntryModel : public QAbstractTableModel
 {
     Q_OBJECT
-    std::vector<Entry*> entries;
+    std::vector<Entry> entries;
 public:
     explicit EntryModel(QObject *parent = 0);
     QHash<int, QByteArray> roleNames() const {
@@ -65,7 +64,7 @@ public:
         return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     }
     // internal
-    void add_entry(Entry *e);
+    void add_entry(Entry &e);
     void save_data();
 
     // for QAbstractTableModel
@@ -75,7 +74,8 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
     // for QML
     Q_INVOKABLE void add(const int ms, const QString description) {
-        return add_entry(new Entry(ms, description));
+        Entry e(ms, description);
+        return add_entry(e);
     }
     Q_INVOKABLE void save() {
         save_data();
