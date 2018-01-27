@@ -1,0 +1,19 @@
+{
+    "cppFile": "bindings.cpp",
+    "rust": {
+        "dir": "rust",
+        "interfaceModule": "interface",
+        "implementationModule": "implementation"
+    },
+    "objects": {
+        "Log": {
+            "type": "Object",
+            "properties": {
+                "dayTotal": {
+                    "type": "quint64",
+                    "write": false
+                }
+            }
+        }
+    }
+}

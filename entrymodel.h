@@ -22,7 +22,7 @@
 #include <vector>
 #include <chrono>
 #include <QAbstractTableModel>
-
+#include "dupa.h"
 
 class Entry {
 public:

@@ -1,4 +1,4 @@
-/*/*
+/*
     Copyright 2016 rhn <gihu.rhn@porcupinefactory.org>
     This file is part of timer-controls.
 
@@ -32,6 +32,10 @@ ApplicationWindow {
         id: stopWatch
         property bool running: false
         onRunningChanged: stopWatch._runningChanged(running)
+    }
+
+    TimeLog {
+        id: database
     }
 
     TimeLogger {
@@ -148,6 +152,23 @@ ApplicationWindow {
             PropertyChanges {
                 target: elapsedEdit
                 readOnly: true
+            }
+        }
+
+        RowLayout {
+            id: rowLayout3
+            Layout.fillWidth: true
+
+            Label {
+                id: label3
+                text: "Day:"
+                Layout.alignment: Qt.AlignLeft
+            }
+            Label {
+                id: label4
+                text: database.dayTotal
+                Layout.alignment: Qt.AlignLeft
+                Layout.fillWidth: true
             }
         }
     }

@@ -22,6 +22,7 @@
 
 #include "stopwatch.h"
 #include "entrymodel.h"
+#include "bindings.h"
 
 int main(int argc, char *argv[])
 {
@@ -32,6 +33,7 @@ int main(int argc, char *argv[])
     qDebug() << "defegegege";
     qmlRegisterType<StopWatch>("timer", 0,1, "StopWatch");
     qmlRegisterType<EntryModel>("timer", 0,1, "TimeLogger");
+    qmlRegisterType<Log>("timer", 0, 1, "TimeLog");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
