@@ -26,6 +26,12 @@ Requirements
 Installation
 ------------
 
+### sqlpp11
+
+```
+../sqlpp11/scripts/ddl2cpp ./schema/timer.sql
+```
+
 ### QtCreator
 
 1. Open the file timer-controls.pro
