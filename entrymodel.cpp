@@ -89,6 +89,17 @@ void EntryModel::save_data() {
     delete db;
 }
 
+int EntryModel::get_week_total()
+{
+    sql::connection *db = get_db();
+    Entries ent_table;
+    Entry::time_point startDate = std::chrono::system_clock::now() - std::chrono::hours(24 * 7);
+
+    const auto& row = (*db)(select(sum(ent_table.duration)).from(ent_table).where(ent_table.startTime > startDate)).front();
+    delete db;
+    return row.sum;
+}
+
 bool EntryModel::insertRows(int row, int count, const QModelIndex &parent) {
     qCDebug(timer) << "insert" << row << count;
     if (row != 0 || count != 1) { // supports only inserting in the front

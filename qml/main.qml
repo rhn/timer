@@ -1,4 +1,4 @@
-/*/*
+/*
     Copyright 2016 rhn <gihu.rhn@porcupinefactory.org>
     This file is part of timer-controls.
 
@@ -148,6 +148,23 @@ ApplicationWindow {
             PropertyChanges {
                 target: elapsedEdit
                 readOnly: true
+            }
+        }
+
+        RowLayout {
+            id: rowLayout3
+            Layout.fillWidth: true
+
+            Label {
+                id: label3
+                text: "Week:"
+                Layout.alignment: Qt.AlignLeft
+            }
+            Label {
+                id: label4
+                text: (timeLogger.weekTotal / 1000 / 60 / 60).toFixed(3);
+                Layout.alignment: Qt.AlignLeft
+                Layout.fillWidth: true
             }
         }
     }

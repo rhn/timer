@@ -66,6 +66,8 @@ public:
     // internal
     void add_entry(Entry &e);
     void save_data();
+    Q_PROPERTY(int weekTotal READ get_week_total)
+    int get_week_total();
 
     // for QAbstractTableModel
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
