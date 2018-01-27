@@ -21,6 +21,9 @@
 
 #include <sqlpp11/sqlite3/sqlite3.h>
 #include <sqlpp11/sqlpp11.h>
+
+#include <date.h>
+
 #include "entrymodel.h"
 #include "logging.h"
 #include "timer_db.h"
@@ -132,7 +135,8 @@ QVariant EntryModel::data(const QModelIndex &index, int role) const {
             return QVariant::fromValue(e->time_ms);
         }
         case Entry::roles::START: {
-            return QVariant::fromValue(0);
+            QString d(date::format("%F", date::floor<hours>(e->start_time)).c_str());
+            return QVariant::fromValue(d);
         }
     }
     return QVariant();
