@@ -5,6 +5,7 @@ version = "0.1.0"
 [dependencies]
 libc = "*"
 sysinfo = "0.3.16"
+diesel = { version = "1.1.0", features = ["postgres"] }
 
 [lib]
 name = "rust"
