@@ -55,9 +55,9 @@ Item {
         text: formatArg(styleData.value)
         anchors.fill: parent
         onEditingFinished: {
-            console.log("finished")
-            var x = decode(text);
-            updated(x);
+            if (label.text !== text) {
+                updated(decode(text));
+            }
             cell.editing = false;
         }
     }
