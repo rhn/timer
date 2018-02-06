@@ -71,6 +71,7 @@ EntryModel::EntryModel(QObject *parent) : QAbstractTableModel(parent) {
     }
     this->ticker.start(1000 * 600);
     connect(&this->ticker, SIGNAL(timeout()), this, SLOT(on_tick()));
+    connect(this, &EntryModel::dataChanged, this, &EntryModel::save_data);
     delete db;
 }
 
