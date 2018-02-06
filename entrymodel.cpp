@@ -1,4 +1,4 @@
-/*
+﻿/*
     Copyright 2016 rhn <gihu.rhn@porcupinefactory.org>
     This file is part of timer-controls.
 
@@ -69,6 +69,8 @@ EntryModel::EntryModel(QObject *parent) : QAbstractTableModel(parent) {
         Entry en((int)e.duration, ((std::string)e.description).c_str(), (int)e.id, u);
         add_entry(en);
     }
+    this->ticker.start(1000 * 600);
+    connect(&this->ticker, SIGNAL(timeout()), this, SLOT(on_tick()));
     delete db;
 }
 
@@ -100,6 +102,7 @@ int EntryModel::get_week_total()
 
     const auto& row = (*db)(select(sum(ent_table.duration)).from(ent_table).where(ent_table.startTime > startDate)).front();
     delete db;
+    qCDebug(timer) << "total";
     return row.sum;
 }
 
@@ -120,6 +123,7 @@ int EntryModel::rowCount(const QModelIndex &parent) const {
 }
 
 int EntryModel::columnCount(const QModelIndex &parent) const {
+    (void) parent;
     qCDebug(timer) << "columnCount" << Entry::columns_count;
     return Entry::columns_count;
 }
@@ -140,4 +144,57 @@ QVariant EntryModel::data(const QModelIndex &index, int role) const {
         }
     }
     return QVariant();
+}
+
+bool EntryModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if ((unsigned)index.row() >= this->entries.size()) {
+        return false;
+    }
+    Entry &e = this->entries[this->entries.size() - index.row() - 1]; // vector grows in the back;
+    switch (role) {
+    case Entry::roles::DESCRIPTION: {
+        if (!value.canConvert<QString>()) {
+            return false;
+        }
+        e.description = value.toString();
+        break;
+    }
+    case Entry::roles::TIME_MS: {
+        if (!value.canConvert<uint>()) {
+            return false;
+        }
+        e.time_ms = value.toUInt();
+        break;
+    }
+    case Entry::roles::START: {
+        return false; // TODO
+        /*if (value.canConvert<QString>()) {
+            // date::parse("%F", value.toString().toUtf8().constData()))
+        }
+        e.start_time =
+        QString d(date::format("%F", date::floor<hours>(e->start_time)).c_str());
+        return QVariant::fromValue(d);
+        */
+    }
+    default: {
+        return false;
+    }
+    }
+    emit dataChanged(index, index, QVector<int>({role}));
+    return true;
+}
+
+void EntryModel::setProperty(const int index, const QString &roleName, const QVariant &value) {
+    if (roleName != "time") {
+        return;
+    }
+    int role = Entry::roles::TIME_MS;
+    QModelIndex modelIndex = this->createIndex(index, 1);
+    setData(modelIndex, value, role);
+}
+
+void EntryModel::on_tick()
+{
+    emit weekTotalChanged(get_week_total());
 }

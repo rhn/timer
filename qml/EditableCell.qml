@@ -29,6 +29,7 @@ Item {
     function decode(text) {
         return text;
     }
+    signal updated(variant value);
 
     Item {
         id: read
@@ -54,8 +55,10 @@ Item {
         text: formatArg(styleData.value)
         anchors.fill: parent
         onEditingFinished: {
-            //styleData.value = decode(text)
-            cell.editing = false
+            console.log("finished")
+            var x = decode(text);
+            updated(x);
+            cell.editing = false;
         }
     }
 }

@@ -22,7 +22,7 @@
 #include <vector>
 #include <chrono>
 #include <QAbstractTableModel>
-
+#include <QTimer>
 
 class Entry {
 public:
@@ -66,7 +66,10 @@ public:
     // internal
     void add_entry(Entry &e);
     void save_data();
-    Q_PROPERTY(int weekTotal READ get_week_total)
+
+    // tracker for past entries
+    QTimer ticker;
+    Q_PROPERTY(int weekTotal READ get_week_total NOTIFY weekTotalChanged)
     int get_week_total();
 
     // for QAbstractTableModel
@@ -74,6 +77,7 @@ public:
     int columnCount(const QModelIndex &parent) const;
     bool insertRows(int row, int count, const QModelIndex &parent);
     QVariant data(const QModelIndex &index, int role) const;
+    bool setData(const QModelIndex &index, const QVariant &value, int role);
     // for QML
     Q_INVOKABLE void add(const int ms, const QString description) {
         Entry e(ms, description);
@@ -82,9 +86,11 @@ public:
     Q_INVOKABLE void save() {
         save_data();
     }
+    Q_INVOKABLE void setProperty(const int index, const QString &roleName, const QVariant &value);
 signals:
-
+    void weekTotalChanged(int ms);
 public slots:
+    void on_tick();
 };
 
 #endif // ENTRYMODEL_H

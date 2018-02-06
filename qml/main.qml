@@ -118,6 +118,7 @@ ApplicationWindow {
                     function decode(text) {
                         return text * 1000 * 60 * 60;
                     }
+                    onUpdated: tableView1.model.setProperty(styleData.row, styleData.role, value)
                 }
             }
             TableViewColumn {
