@@ -1,3 +1,5 @@
+cppFile: bindings.cpp
+
 {
     "cppFile": "bindings.cpp",
     "rust": {
@@ -17,3 +19,59 @@
         }
     }
 }
+
+Messages:
+    functions:
+      getFilename:
+        arguments:
+        - name: index
+          type: quint32
+        mut: false
+        return: QString
+      getMessage:
+        arguments:
+        - name: index
+          type: quint32
+        return: MessageMeta
+        return_reference: false
+      handleMessageChange:
+        arguments:
+          - name: id
+            type: QString
+        mut: true
+        return: void
+    itemProperties:
+      date:
+        roles: [[], [], [display]]
+        type: QString
+        rustByValue: true
+      filename:
+        roles: [[], []]
+        type: QString
+      subject:
+        roles: [[]]
+        type: QString
+        rustByValue: true
+      threadSubject:
+        roles: [[]]
+        type: QString
+      filtered:
+        roles: [[display]]
+        type: quint32
+    properties:
+      database:
+        type: Database
+        write: true
+      query:
+        type: QString
+        write: true
+      filter:
+        type: QString
+        write: true
+      queryValid:
+        type: bool
+        write: false
+      filterValid:
+        type: bool
+        write: false
+    type: Tree
