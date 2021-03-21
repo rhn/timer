@@ -1,8 +1,7 @@
 // @generated automatically by Diesel CLI.
-
+#![allow(non_snake_case)]
 use diesel::table;
 
-#[allow(non_snake_case)]
 table! {
     Entries (id) {
         id -> Integer,

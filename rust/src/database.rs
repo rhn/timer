@@ -1,5 +1,6 @@
 /*! Database procedures */
 
+use chrono::NaiveDateTime;
 use crate::schema;
 use diesel::sqlite::SqliteConnection;
 use once_cell::sync::Lazy;
@@ -14,12 +15,30 @@ type Conn = Arc<Mutex<SqliteConnection>>;
 
 static CONNECTION: Lazy<Conn> = Lazy::new(|| Arc::new(Mutex::new(make_connection())));
 
-#[derive(Queryable, Debug)]
+mod q {
+    #[derive(Queryable, Debug)]
+    pub struct Entry {
+        id: i32,
+        pub description: String,
+        pub duration: i32,
+        pub start_time: i32,
+    }
+}
+
 pub struct Entry {
-    pub id: i32,
     pub description: String,
     pub duration: i32,
-    pub start: i32,
+    pub start: String,
+}
+
+impl From<q::Entry> for Entry {
+    fn from(e: q::Entry) -> Entry {
+        Entry {
+            description: e.description,
+            duration: e.duration,
+            start: NaiveDateTime::from_timestamp(e.start_time as i64, 0).format("%Y-%m-%d").to_string(),
+        }
+    }
 }
 
 pub struct Entries {
@@ -35,16 +54,15 @@ impl Entries {
         use schema::Entries::dsl::*;
         let entries = Entries
             .limit(1)
-            .load::<Entry>(&*conn)
+            .load::<q::Entry>(&*conn)
             .unwrap();
         for entry in entries {
             println!("{:?}", entry);
         }
         Entry {
-            id: 0,
             description: "text".into(),
             duration: 1,
-            start: 9,
+            start: "9".into(),
         }
     }
 }

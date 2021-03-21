@@ -66,7 +66,6 @@ impl EntryModelTrait for EntryModel {
         self.list.index(index).duration as u32
     }
     fn start(&self, index: usize) -> String {
-       // self.list.index(index).start.clone()
-       "ddd".into()
+       self.list.index(index).start.clone()
     }
 }
