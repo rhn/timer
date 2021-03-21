@@ -11,3 +11,10 @@ table! {
         customer -> Text, 
     }
 }
+
+table! {
+    Customers (id) {
+        id -> Integer,
+        name -> Text,
+    }
+}

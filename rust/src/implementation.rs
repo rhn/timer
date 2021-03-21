@@ -78,3 +78,29 @@ impl EntryModelTrait for EntryModel {
         self.model.data_changed(0, self.list.len());
     }
 }
+
+
+pub struct CustomersModel {
+    emit: CustomersModelEmitter,
+    model: CustomersModelList,
+    list: database::Customers,
+}
+
+impl CustomersModelTrait for CustomersModel {
+    fn new(emit: CustomersModelEmitter, model: CustomersModelList) -> CustomersModel {
+        CustomersModel {
+            emit,
+            model,
+            list: database::get_customers(),
+        }
+    }
+    fn emit(&mut self) -> &mut CustomersModelEmitter {
+        &mut self.emit
+    }
+    fn row_count(&self) -> usize {
+        self.list.len()
+    }
+    fn name(&self, index: usize) -> &str {
+        &self.list[index]
+    }
+}

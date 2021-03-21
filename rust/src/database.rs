@@ -36,6 +36,12 @@ mod q {
         pub start_time: i32,
         pub customer: String,
     }
+    
+    #[derive(Queryable, Debug, Clone)]
+    pub struct Customer {
+        id: i32,
+        pub name: String,
+    }
 }
 
 #[derive(Clone)]
@@ -113,6 +119,61 @@ fn make_connection() -> SqliteConnection {
 pub fn get_entries() -> Entries {
     let cache = Entries::query_all(&CONNECTION);
     Entries {
+        connection: CONNECTION.clone(),
+        cache
+    }
+}
+
+pub struct Customers {
+    connection: Conn,
+    cache: Vec<String>,
+}
+
+impl Customers {
+    pub fn len(&self) -> usize {
+       self.cache.len()
+    }
+
+    fn query_all(connection: &Conn) -> Vec<String> {
+        let conn = connection.lock().unwrap();
+        use schema::Customers::dsl::*;
+        Customers
+            .load::<q::Customer>(&*conn)
+            .unwrap()
+            .into_iter()
+            .map(|c| c.name)
+            .collect()
+    }
+    /*
+    pub fn add_entry(&mut self, duration: u32, description: String, customer: String) {
+        {
+            let conn = self.connection.lock().unwrap();
+            let entry = q::NewEntry {
+                description: description.clone(),
+                duration: duration as i32,
+                start_time: Utc::now().timestamp() as i32,
+                customer: customer.clone(),
+            };
+            diesel::insert_into(schema::Entries::table)
+                .values(entry.clone())
+                .execute(&*conn)
+                .expect(&format!("Failed to insert {:?}", entry));
+        }
+        self.cache = Self::query_all(&self.connection);
+    }*/
+}
+
+impl Index<usize> for Customers {
+    type Output = String;
+    fn index(&self, index: usize) -> &String {
+        &self.cache[index]
+    }
+}
+
+
+pub fn get_customers() -> Customers {
+    let cache = Customers::query_all(&CONNECTION);
+    Customers {
         connection: CONNECTION.clone(),
         cache
     }

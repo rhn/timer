@@ -9,7 +9,13 @@ objects:
         properties:
             dayTotal:
                 type: "quint64"
-                write: false 
+                write: false
+    CustomersModel:
+        type: List
+        itemProperties:
+            name:
+                type: QString
+                roles: [["display"]]
     EntryModel:
 #        rust_new: true
         type: Tree

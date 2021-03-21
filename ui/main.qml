@@ -38,6 +38,10 @@ ApplicationWindow {
         id: timeLogger
     }
 
+    Customers {
+        id: customers
+    }
+
     ColumnLayout {
         id: columnLayout1
         anchors.fill: parent
@@ -74,28 +78,29 @@ ApplicationWindow {
                 onCheckedChanged: stopWatch.running = checked
             }
         }
-
-        ColumnLayout {
-            id: columnLayout2
+        TextField {
+            id: description
             Layout.fillWidth: true
+            placeholderText: qsTr("Activity description")
+        }
 
-            TextField {
-                id: description
-                Layout.fillWidth: true
-                placeholderText: qsTr("Activity description")
-            }
+        ComboBox {
+            id: customer
+            model: customers
+            textRole: "display"
+        }
 
-            Button {
-                id: button2
-                text: qsTr("Add")
-                onClicked: {
-                    stopWatch.running = false
-                    timeLogger.add(stopWatch.currentTime, description.text, "default")
-                    description.text = "";
-                    stopWatch.clear()
-                }
+        Button {
+            id: button2
+            text: qsTr("Add")
+            onClicked: {
+                stopWatch.running = false
+                timeLogger.add(stopWatch.currentTime, description.text, customer.currentText);
+                description.text = "";
+                stopWatch.clear()
             }
         }
+
         TableView {
             id: tableView1
             Layout.fillHeight: true
@@ -159,5 +164,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
             }
         }
+
+
     }
 }
