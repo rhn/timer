@@ -88,23 +88,26 @@ ApplicationWindow {
             placeholderText: qsTr("Activity description")
         }
 
-        ComboBox {
-            id: customer
-            model: customers
-            textRole: "display"
-        }
+        RowLayout {
+            Layout.fillWidth: true
+            ComboBox {
+                id: customer
+                model: customers
+                textRole: "display"
+                Layout.fillWidth: true
+            }
 
-        Button {
-            id: button2
-            text: qsTr("Add")
-            onClicked: {
-                stopWatch.running = false
-                timeLogger.add(stopWatch.currentTime, description.text, customer.currentText);
-                description.text = "";
-                stopWatch.clear()
+            Button {
+                id: button2
+                text: qsTr("Add")
+                onClicked: {
+                    stopWatch.running = false
+                    timeLogger.add(stopWatch.currentTime, description.text, customer.currentText);
+                    description.text = "";
+                    stopWatch.clear()
+                }
             }
         }
-
         TableView {
             id: tableView1
             Layout.fillHeight: true
