@@ -1,6 +1,8 @@
 use crate::database;
 use crate::interface::*;
 
+use std::ops::Index;
+
 pub struct Log {
     emit: LogEmitter,
     day_total: u64,

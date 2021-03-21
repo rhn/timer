@@ -9,14 +9,15 @@ use std::sync::{ Arc, Mutex };
 
 
 use diesel::{ Connection, RunQueryDsl, QueryDsl };
-
+use std::ops::Index;
+    
 
 type Conn = Arc<Mutex<SqliteConnection>>;
 
 static CONNECTION: Lazy<Conn> = Lazy::new(|| Arc::new(Mutex::new(make_connection())));
 
 mod q {
-    #[derive(Queryable, Debug)]
+    #[derive(Queryable, Debug, Clone)]
     pub struct Entry {
         id: i32,
         pub description: String,
@@ -25,6 +26,7 @@ mod q {
     }
 }
 
+#[derive(Clone)]
 pub struct Entry {
     pub description: String,
     pub duration: i32,
@@ -43,34 +45,32 @@ impl From<q::Entry> for Entry {
 
 pub struct Entries {
     connection: Conn,
+    cache: Vec<Entry>,
 }
 
 impl Entries {
     pub fn len(&self) -> usize {
-        3
+       self.cache.len()
     }
-    pub fn index(&self, index: usize) -> Entry {
-        let conn = self.connection.lock().unwrap();
+    fn query_all(connection: &Conn) -> Vec<Entry> {
+        let conn = connection.lock().unwrap();
         use schema::Entries::dsl::*;
-        let entries = Entries
+        Entries
             .limit(1)
             .load::<q::Entry>(&*conn)
-            .unwrap();
-        for entry in entries {
-            println!("{:?}", entry);
-        }
-        Entry {
-            description: "text".into(),
-            duration: 1,
-            start: "9".into(),
-        }
+            .unwrap()
+            .into_iter()
+            .map(Entry::from)
+            .collect()
     }
 }
-/*
+
 impl Index<usize> for Entries {
     type Output = Entry;
-    
-}*/
+    fn index(&self, index: usize) -> &Entry {
+        &self.cache[index]
+    }
+}
 
 fn make_connection() -> SqliteConnection {
     let db_path = env::var("DATABASE_PATH").unwrap_or("../entries.db".into());
@@ -79,5 +79,9 @@ fn make_connection() -> SqliteConnection {
 }
 
 pub fn get_entries() -> Entries {
-    Entries { connection: CONNECTION.clone() }
+    let cache = Entries::query_all(&CONNECTION);
+    Entries {
+        connection: CONNECTION.clone(),
+        cache
+    }
 }
