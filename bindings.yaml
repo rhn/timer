@@ -1,0 +1,33 @@
+cppFile: bindings.cpp
+rust:
+    dir: 'rust'
+    implementationModule: implementation
+    interfaceModule: interface
+objects:
+    Log:
+        type: "Object"
+        properties:
+            dayTotal:
+                type: "quint64"
+                write: false 
+    EntryModel:
+#        rust_new: true
+        type: Tree
+      #- "(fn add void (mut self) (ms quint32) (description QString) (customer QString))"
+#      - "(fn save void (mut self))"
+        itemProperties:
+          start:
+            roles: [[], [], [display]]
+            type: QString
+            rustByValue: true
+          duration:
+            roles: [[], []]
+            type: quint32
+          description:
+            roles: [[]]
+            type: QString
+            rustByValue: true
+#          customer:
+   #         roles: [[]]
+      #      type: QString
+

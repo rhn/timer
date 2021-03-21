@@ -75,8 +75,9 @@ add_custom_command(
 )
 
 set(RUST_DEPS
-    rust/src/lib.rs
+    rust/src/database.rs
     rust/src/implementation.rs
+    rust/src/lib.rs
     rust/Cargo.toml
     rust/Cargo.lock
     "${CARGO_TARGET_DIR}/src/interface.rs"

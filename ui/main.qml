@@ -45,8 +45,6 @@ ApplicationWindow {
         RowLayout {
             id: rowLayout2
             Layout.fillWidth: true
-            anchors.right: parent.right
-            anchors.left: parent.left
 
             Button {
                 id: startStopBtn
@@ -109,8 +107,8 @@ ApplicationWindow {
                 title: "description"
             }
             TableViewColumn {
-                role: "time"
-                title: "time"
+                role: "duration"
+                title: "duration"
                 delegate: EditableCell {
                     function formatArg(arg) {
                         return (styleData.value / 1000 / 60 / 60).toFixed(3);

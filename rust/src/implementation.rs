@@ -26,7 +26,7 @@ type EntryModelItem = database::Entry;
 pub struct EntryModel {
     emit: EntryModelEmitter,
     model: EntryModelTree,
-    list: Vec<EntryModelItem>,
+    list: database::Entries,
 }
 
 impl EntryModelTrait for EntryModel {
@@ -34,13 +34,14 @@ impl EntryModelTrait for EntryModel {
         EntryModel {
             emit,
             model,
-            list: Vec::new(),
+            list: database::get_entries(),
         }
     }
     fn emit(&mut self) -> &mut EntryModelEmitter {
         &mut self.emit
     }
     fn row_count(&self, item: Option<usize>) -> usize {
+        println!("count");
         self.list.len()
     }
     fn index(&self, item: Option<usize>, row: usize) -> usize {
@@ -60,12 +61,13 @@ impl EntryModelTrait for EntryModel {
         }
     }
     fn description(&self, index: usize) -> String {
-        self.list[index].description.clone()
+        println!("dddd");
+        self.list.index(index).description.clone()
     }
     fn duration(&self, index: usize) -> u32 {
-        self.list[index].duration
+        self.list.index(index).duration
     }
     fn start(&self, index: usize) -> String {
-        self.list[index].start.clone()
+        self.list.index(index).start.clone()
     }
 }
