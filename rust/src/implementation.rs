@@ -46,7 +46,7 @@ impl EntryModelTrait for EntryModel {
         self.list.len()
     }
     fn index(&self, item: Option<usize>, row: usize) -> usize {
-        0
+        row
     }
     fn parent(&self, index: usize) -> Option<usize> {
         None

@@ -1,6 +1,6 @@
 /*! Database procedures */
 
-use chrono::NaiveDateTime;
+use chrono::{ Duration, NaiveDateTime, Utc };
 use crate::schema;
 use diesel::sqlite::SqliteConnection;
 use once_cell::sync::Lazy;
@@ -8,7 +8,7 @@ use std::env;
 use std::sync::{ Arc, Mutex };
 
 
-use diesel::{ Connection, RunQueryDsl, QueryDsl };
+use diesel::{ Connection, ExpressionMethods, RunQueryDsl, QueryDsl };
 use std::ops::Index;
     
 
@@ -56,7 +56,8 @@ impl Entries {
         let conn = connection.lock().unwrap();
         use schema::Entries::dsl::*;
         Entries
-            .limit(1)
+            .filter(start_time.gt((Utc::now() - Duration::days(32)).timestamp() as i32))
+            .order(start_time.desc())
             .load::<q::Entry>(&*conn)
             .unwrap()
             .into_iter()
