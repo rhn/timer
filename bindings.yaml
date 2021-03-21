@@ -20,13 +20,14 @@ objects:
                       type: quint32
                     - name: description
                       type: QString
+                    - name: customer
+                      type: QString
                 return: void
                 mut: true
       #- "(fn add void (mut self) (ms quint32) (description QString) (customer QString))"
-#      - "(fn save void (mut self))"
         itemProperties:
           start:
-            roles: [[], [], [display]]
+            roles: [[], [], []]
             type: QString
             rustByValue: true
           duration:
@@ -36,7 +37,7 @@ objects:
             roles: [[]]
             type: QString
             rustByValue: true
-#          customer:
-   #         roles: [[]]
-      #      type: QString
+          customer:
+            roles: [[], [], [], []]
+            type: QString
 

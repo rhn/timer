@@ -25,14 +25,16 @@ mod q {
         pub description: String,
         pub duration: i32,
         pub start_time: i32,
+        pub customer: String,
     }
     
-    #[derive(Insertable)]
+    #[derive(Insertable, Clone, Debug)]
     #[table_name="Entries"]
     pub struct NewEntry {
         pub description: String,
         pub duration: i32,
         pub start_time: i32,
+        pub customer: String,
     }
 }
 
@@ -41,6 +43,7 @@ pub struct Entry {
     pub description: String,
     pub duration: i32,
     pub start: String,
+    pub customer: String,
 }
 
 impl From<q::Entry> for Entry {
@@ -49,6 +52,7 @@ impl From<q::Entry> for Entry {
             description: e.description,
             duration: e.duration,
             start: NaiveDateTime::from_timestamp(e.start_time as i64, 0).format("%Y-%m-%d").to_string(),
+            customer: e.customer,
         }
     }
 }
@@ -75,17 +79,19 @@ impl Entries {
             .collect()
     }
     
-    pub fn add_entry(&mut self, duration: u32, description: String) {
+    pub fn add_entry(&mut self, duration: u32, description: String, customer: String) {
         {
             let conn = self.connection.lock().unwrap();
+            let entry = q::NewEntry {
+                description: description.clone(),
+                duration: duration as i32,
+                start_time: Utc::now().timestamp() as i32,
+                customer: customer.clone(),
+            };
             diesel::insert_into(schema::Entries::table)
-                .values(q::NewEntry {
-                    description: description.clone(),
-                    duration: duration as i32,
-                    start_time: Utc::now().timestamp() as i32,
-                })
+                .values(entry.clone())
                 .execute(&*conn)
-                .expect(&format!("Failed to insert duration {} description {:?}", duration, description));
+                .expect(&format!("Failed to insert {:?}", entry));
         }
         self.cache = Self::query_all(&self.connection);
     }

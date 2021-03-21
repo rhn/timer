@@ -8,5 +8,6 @@ table! {
         description -> Text,
         duration -> Integer,
         start_time -> Integer,
+        customer -> Text, 
     }
 }

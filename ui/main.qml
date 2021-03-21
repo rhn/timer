@@ -90,7 +90,7 @@ ApplicationWindow {
                 text: qsTr("Add")
                 onClicked: {
                     stopWatch.running = false
-                    timeLogger.add(stopWatch.currentTime, description.text)
+                    timeLogger.add(stopWatch.currentTime, description.text, "default")
                     description.text = "";
                     stopWatch.clear()
                 }
@@ -100,7 +100,10 @@ ApplicationWindow {
             id: tableView1
             Layout.fillHeight: true
             Layout.fillWidth: true
-
+            TableViewColumn {
+                role: "customer"
+                title: "customer"
+            }
             TableViewColumn {
                 role: "description"
                 title: "description"
@@ -124,14 +127,6 @@ ApplicationWindow {
 
 
             model: timeLogger
-        }
-
-        Button {
-            id: saveBtn
-            text: qsTr("Save")
-            onClicked: {
-                timeLogger.save();
-            }
         }
 
         states: State {
