@@ -13,6 +13,15 @@ objects:
     EntryModel:
 #        rust_new: true
         type: Tree
+        functions:
+            add:
+                arguments:
+                    - name: duration
+                      type: quint32
+                    - name: description
+                      type: QString
+                return: void
+                mut: true
       #- "(fn add void (mut self) (ms quint32) (description QString) (customer QString))"
 #      - "(fn save void (mut self))"
         itemProperties:

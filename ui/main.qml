@@ -93,7 +93,6 @@ ApplicationWindow {
                     timeLogger.add(stopWatch.currentTime, description.text)
                     description.text = "";
                     stopWatch.clear()
-                    timeLogger.save();
                 }
             }
         }

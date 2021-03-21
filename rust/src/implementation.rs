@@ -70,4 +70,8 @@ impl EntryModelTrait for EntryModel {
     fn start(&self, index: usize) -> String {
        self.list.index(index).start.clone()
     }
+    
+    fn add(&mut self, duration: u32, description: String) {
+        self.list.add_entry(duration, description);
+    }
 }

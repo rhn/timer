@@ -17,9 +17,19 @@ type Conn = Arc<Mutex<SqliteConnection>>;
 static CONNECTION: Lazy<Conn> = Lazy::new(|| Arc::new(Mutex::new(make_connection())));
 
 mod q {
+    use super::schema::Entries;
+
     #[derive(Queryable, Debug, Clone)]
     pub struct Entry {
         id: i32,
+        pub description: String,
+        pub duration: i32,
+        pub start_time: i32,
+    }
+    
+    #[derive(Insertable)]
+    #[table_name="Entries"]
+    pub struct NewEntry {
         pub description: String,
         pub duration: i32,
         pub start_time: i32,
@@ -63,6 +73,21 @@ impl Entries {
             .into_iter()
             .map(Entry::from)
             .collect()
+    }
+    
+    pub fn add_entry(&mut self, duration: u32, description: String) {
+        {
+            let conn = self.connection.lock().unwrap();
+            diesel::insert_into(schema::Entries::table)
+                .values(q::NewEntry {
+                    description: description.clone(),
+                    duration: duration as i32,
+                    start_time: Utc::now().timestamp() as i32,
+                })
+                .execute(&*conn)
+                .expect(&format!("Failed to insert duration {} description {:?}", duration, description));
+        }
+        self.cache = Self::query_all(&self.connection);
     }
 }
 
