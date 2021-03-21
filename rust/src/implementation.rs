@@ -41,7 +41,6 @@ impl EntryModelTrait for EntryModel {
         &mut self.emit
     }
     fn row_count(&self, item: Option<usize>) -> usize {
-        println!("count");
         self.list.len()
     }
     fn index(&self, item: Option<usize>, row: usize) -> usize {
@@ -61,13 +60,13 @@ impl EntryModelTrait for EntryModel {
         }
     }
     fn description(&self, index: usize) -> String {
-        println!("dddd");
         self.list.index(index).description.clone()
     }
     fn duration(&self, index: usize) -> u32 {
-        self.list.index(index).duration
+        self.list.index(index).duration as u32
     }
     fn start(&self, index: usize) -> String {
-        self.list.index(index).start.clone()
+       // self.list.index(index).start.clone()
+       "ddd".into()
     }
 }
