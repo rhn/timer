@@ -162,7 +162,7 @@ ApplicationWindow {
             }
             Label {
                 id: label4
-                text: 0
+                text: "0"
                 Layout.alignment: Qt.AlignLeft
                 Layout.fillWidth: true
             }

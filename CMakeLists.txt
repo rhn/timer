@@ -57,6 +57,7 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG
 )
 find_package(Qt5QuickControls2 EXACT ${Qt5Core_VERSION})
 
+find_package(SQLite3)
 #find_package(KF5Kirigami2)
 
 include(WrapCargo)
@@ -69,7 +70,7 @@ set(RQBG_GENERATED_DIR "${CMAKE_CURRENT_BINARY_DIR}")
 add_custom_command(
   OUTPUT "${CARGO_TARGET_DIR}/src/interface.rs" "${RQBG_GENERATED_DIR}/bindings.h" "${RQBG_GENERATED_DIR}/bindings.cpp"
   COMMAND "${rqbg_EXECUTABLE}" --destination . --cargo-toml "${RUST_DIR}/Cargo.toml" "${CMAKE_CURRENT_SOURCE_DIR}/bindings.yaml"
-  DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/bindings.yaml"
+  DEPENDS bindings.yaml
   WORKING_DIRECTORY "${RQBG_GENERATED_DIR}"
 )
 
@@ -100,7 +101,7 @@ add_executable(timer-controls ${SRCS})
 add_dependencies(timer-controls rust_lib)
 
 list(APPEND Libs "${RUST_LIB}")
-list(APPEND Libs Qt5::Core Qt5::Quick Qt5::Widgets ${CMAKE_DL_LIBS} pthread)
+list(APPEND Libs Qt5::Core Qt5::Quick Qt5::Widgets ${CMAKE_DL_LIBS} pthread sqlite3)
 target_link_libraries(timer-controls ${Libs})
 target_include_directories(timer-controls PRIVATE "${RQBG_GENERATED_DIR}")
 target_include_directories(timer-controls PRIVATE "${CMAKE_INCLUDE_PATH}")
@@ -117,3 +118,16 @@ if (ECM_FOUND)
     install(FILES org.kde.rq_bindgen.appdata.xml
             DESTINATION ${KDE_INSTALL_METAINFODIR})
 endif()
+
+# Data
+
+include(GNUInstallDirs)
+
+set(INSTALL_DATADIR "${CMAKE_INSTALL_DATADIR}/timer-controls")
+add_compile_definitions(QML_DIR="${CMAKE_INSTALL_PREFIX}/${INSTALL_DATADIR}/ui")
+
+install(FILES
+  ui/main.qml
+  ui/EditableCell.qml
+  DESTINATION "${INSTALL_DATADIR}/ui"
+)

@@ -37,7 +37,7 @@ void StopWatch::_runningChanged(const bool running) {
 
 void StopWatch::clear() {
     if (this->ticker.isActive()) {
-        qCWarning(timer) << "Clearing while timer is running";
+//        qCWarning(timer) << "Clearing while timer is running";
     }
     this->last_time = 0;
     this->current_time = 0;

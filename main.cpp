@@ -17,14 +17,13 @@
 */
 
 #include <QApplication>
+#include <QProcessEnvironment>
 #include <QQmlApplicationEngine>
 #include <QQmlComponent>
 
+
 #include "stopwatch.h"
-#include "entrymodel.h"
 #include "bindings.h"
-//#include <sqlpp11/case.h>
-//#include "timer_db.h"
 
 int main(int argc, char *argv[])
 {
@@ -33,11 +32,11 @@ int main(int argc, char *argv[])
   //  QApplication::setOrganizationName("Me");
 
     qmlRegisterType<StopWatch>("timer", 0,1, "StopWatch");
-//    qmlRegisterType<EntryModel>("timer", 0,1, "TimeLogger");
-//    qmlRegisterType<Entries>("timer", 0, 1, "Entries");
+    qmlRegisterType<EntryModel>("timer", 0,1, "TimeLogger");
 
     QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    QString qml_root = QProcessEnvironment::systemEnvironment().value("QML_DATA_DIR", QML_DIR) + "/main.qml";
+    engine.load(qml_root);
 
     return app.exec();
 }
