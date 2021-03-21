@@ -48,10 +48,10 @@ objects:
             type: QString
     Generic:
         type: Object
-        functions:
+        properties:
             weekly_total:
-                arguments: []
-                return: quint32
+                type: quint32
+        functions:
             weekly_customer:
                 arguments:
                     - name: customer

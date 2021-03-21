@@ -1,10 +1,13 @@
 /*! Database procedures */
 
 use chrono::{ Duration, NaiveDateTime, Utc };
+use crate::comms;
 use crate::schema;
+use crate::xdg;
 use diesel::sqlite::SqliteConnection;
 use once_cell::sync::Lazy;
 use std::env;
+use std::path::PathBuf;
 use std::sync::{ Arc, Mutex };
 
 
@@ -112,9 +115,13 @@ impl Index<usize> for Entries {
 }
 
 fn make_connection() -> SqliteConnection {
-    let db_path = env::var("DATABASE_PATH").unwrap_or("../entries.db".into());
-    println!("db: {}", db_path);
-    SqliteConnection::establish(&db_path).unwrap()
+    let db_path = env::var("DATABASE_PATH")
+        .ok()
+        .map(PathBuf::from)
+        .or(xdg::data_path("timer-controls/entries.db"))
+        .unwrap();
+    println!("db: {:?}", db_path);
+    SqliteConnection::establish(db_path.to_str().unwrap()).unwrap()
 }
 
 pub fn get_entries() -> Entries {

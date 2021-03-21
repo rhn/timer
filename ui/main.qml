@@ -183,7 +183,7 @@ ApplicationWindow {
             }
             Label {
                 id: label6
-                text: (generic.weekly_total() / 1000 / 60 / 60).toFixed(3)
+                text: (generic.weekly_total / 1000 / 60 / 60).toFixed(3)
                 Layout.alignment: Qt.AlignLeft
                 Layout.fillWidth: true
             }

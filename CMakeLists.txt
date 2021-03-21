@@ -80,6 +80,7 @@ set(RUST_DEPS
     rust/src/interface.rs
     rust/src/lib.rs
     rust/src/schema.rs
+    rust/src/xdg.rs
     rust/Cargo.toml
     rust/Cargo.lock
     "${CARGO_TARGET_DIR}/src/interface.rs"

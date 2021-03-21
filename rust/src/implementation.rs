@@ -1,7 +1,11 @@
+use crate::comms;
 use crate::database;
 use crate::interface::*;
+use std::thread;
+
 
 use std::ops::Index;
+
 
 pub struct Log {
     emit: LogEmitter,
@@ -111,7 +115,18 @@ pub struct Generic {
 }
 
 impl GenericTrait for Generic {
-    fn new(emit: GenericEmitter) -> Generic {
+    fn new(mut emit: GenericEmitter) -> Generic {
+        let chan = comms::get_recv_channel();
+        let mut inemit = emit.clone();
+        thread::spawn(move || {
+            loop {
+                use comms::Message::*;
+                match chan.recv().unwrap() {
+                    TotalChanged(_total) => inemit.weekly_total_changed(),
+                    Quit => break,
+                }
+            }
+        });
         Generic {
             emit,
             object: database::get_generic(),
