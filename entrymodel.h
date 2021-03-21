@@ -23,6 +23,7 @@
 #include <chrono>
 #include <QAbstractTableModel>
 
+
 class Entry {
 public:
     typedef std::chrono::time_point<std::chrono::system_clock> time_point;

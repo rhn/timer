@@ -90,6 +90,8 @@ add_custom_target(rust_lib DEPENDS "${RUST_LIB}")
 
 set(SRCS
   main.cpp
+  #entrymodel.cpp
+  stopwatch.cpp
   "${RQBG_GENERATED_DIR}/bindings.cpp"
   "${RQBG_GENERATED_DIR}/bindings.h"
 )
@@ -98,12 +100,14 @@ add_executable(timer-controls ${SRCS})
 add_dependencies(timer-controls rust_lib)
 
 list(APPEND Libs "${RUST_LIB}")
-list(APPEND Libs Qt5::Core Qt5::Quick Qt5::Widgets ${CMAKE_DL_LIBS} notmuch pthread)
+list(APPEND Libs Qt5::Core Qt5::Quick Qt5::Widgets ${CMAKE_DL_LIBS} pthread)
 target_link_libraries(timer-controls ${Libs})
 target_include_directories(timer-controls PRIVATE "${RQBG_GENERATED_DIR}")
+target_include_directories(timer-controls PRIVATE "${CMAKE_INCLUDE_PATH}")
+target_include_directories(timer-controls PRIVATE "${CMAKE_INCLUDE_PATH}/date")
 
 set_target_properties(timer-controls PROPERTIES
-    CXX_STANDARD 11
+    CXX_STANDARD 14
     CXX_STANDARD_REQUIRED ON
 )
 

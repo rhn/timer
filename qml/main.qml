@@ -34,10 +34,6 @@ ApplicationWindow {
         onRunningChanged: stopWatch._runningChanged(running)
     }
 
-    TimeLog {
-        id: database
-    }
-
     TimeLogger {
         id: timeLogger
     }
@@ -166,7 +162,7 @@ ApplicationWindow {
             }
             Label {
                 id: label4
-                text: database.dayTotal
+                text: 0
                 Layout.alignment: Qt.AlignLeft
                 Layout.fillWidth: true
             }

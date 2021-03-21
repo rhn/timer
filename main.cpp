@@ -23,6 +23,8 @@
 #include "stopwatch.h"
 #include "entrymodel.h"
 #include "bindings.h"
+//#include <sqlpp11/case.h>
+//#include "timer_db.h"
 
 int main(int argc, char *argv[])
 {
@@ -30,10 +32,9 @@ int main(int argc, char *argv[])
 //    QApplication::setApplicationName("MyApp");
   //  QApplication::setOrganizationName("Me");
 
-    qDebug() << "defegegege";
     qmlRegisterType<StopWatch>("timer", 0,1, "StopWatch");
-    qmlRegisterType<EntryModel>("timer", 0,1, "TimeLogger");
-    qmlRegisterType<Log>("timer", 0, 1, "TimeLog");
+//    qmlRegisterType<EntryModel>("timer", 0,1, "TimeLogger");
+//    qmlRegisterType<Entries>("timer", 0, 1, "Entries");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

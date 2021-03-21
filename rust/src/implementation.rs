@@ -1,7 +1,4 @@
-#![allow(unused_imports)]
-#![allow(unused_variables)]
-#![allow(dead_code)]
-use interface::*;
+use crate::interface::*;
 
 pub struct Log {
     emit: LogEmitter,
@@ -15,8 +12,8 @@ impl LogTrait for Log {
             day_total: 101,
         }
     }
-    fn emit(&self) -> &LogEmitter {
-        &self.emit
+    fn emit(&mut self) -> &mut LogEmitter {
+        &mut self.emit
     }
     fn day_total(&self) -> u64 {
         self.day_total
