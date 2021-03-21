@@ -9,7 +9,8 @@ use once_cell::sync::Lazy;
 use std::env;
 use std::path::PathBuf;
 use std::sync::{ Arc, Mutex };
-
+use std::time;
+use std::thread;
 
 use diesel::{ Connection, ExpressionMethods, RunQueryDsl, QueryDsl };
 use diesel::dsl::sum;
@@ -189,6 +190,7 @@ pub fn get_customers() -> Customers {
 
 pub struct Generic {
     connection: Conn,
+    thread: thread::JoinHandle<()>,
 }
 
 pub type CustomerRef = String;
@@ -217,7 +219,15 @@ impl Generic {
 }
 
 pub fn get_generic() -> Generic {
+    let sender = comms::get_send_channel();
+    let thread = thread::spawn(move || {
+        loop {
+            thread::sleep(time::Duration::from_secs(10*60));
+            sender.send(comms::Message::TotalChanged(0)).unwrap();
+        }
+    });
     Generic {
         connection: CONNECTION.clone(),
+        thread,
     }
 }

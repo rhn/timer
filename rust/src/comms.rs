@@ -11,14 +11,6 @@ enum Bus<T> {
 }
 
 impl<T> Bus<T> {
-    fn into_claimed(self) -> (Option<Receiver<T>>, Bus<T>) {
-        use Bus::*;
-        match self {
-            Unclaimed(r, s) => (Some(r), Claimed(s)),
-            Claimed(s) => (None, Claimed(s)),
-            _ => panic!(),
-        }
-    }
     fn claim(&mut self) -> Option<Receiver<T>> {
         use Bus::*;
         let mut recv = None;
@@ -31,6 +23,14 @@ impl<T> Bus<T> {
             _ => panic!(),
         };
         recv
+    }
+    fn get_sender(&self) -> Sender<T> {
+        use Bus::*;
+        match self {
+            Unclaimed(_, s) => s.clone(),
+            Claimed(s) => s.clone(),
+            _ => panic!(),
+        }
     }
 }
 
@@ -50,4 +50,9 @@ pub fn get_recv_channel() -> Receiver<Message> {
     let mut bus = BUS.lock().unwrap();
     let r = bus.claim();
     r.unwrap()
+}
+
+pub fn get_send_channel() -> Sender<Message> {
+    let bus = BUS.lock().unwrap();
+    bus.get_sender()
 }

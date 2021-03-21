@@ -75,6 +75,7 @@ add_custom_command(
 )
 
 set(RUST_DEPS
+    rust/src/comms.rs
     rust/src/database.rs
     rust/src/implementation.rs
     rust/src/interface.rs

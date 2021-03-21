@@ -125,6 +125,7 @@ impl GenericTrait for Generic {
                     TotalChanged(_total) => inemit.weekly_total_changed(),
                     Quit => break,
                 }
+                println!("total changed");
             }
         });
         Generic {
