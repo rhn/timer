@@ -27,6 +27,7 @@ ApplicationWindow {
     title: qsTr("Timer")
     visible: true
     id: timerApp
+    width: 400
 
     StopWatch { // make this a context property?
         id: stopWatch
@@ -115,14 +116,17 @@ ApplicationWindow {
             TableViewColumn {
                 role: "customer"
                 title: "customer"
+                width: 80
             }
             TableViewColumn {
                 role: "description"
                 title: "description"
+                width: 150
             }
             TableViewColumn {
                 role: "duration"
                 title: "duration"
+                width: 50
                 delegate: EditableCell {
                     function formatArg(arg) {
                         return (styleData.value / 1000 / 60 / 60).toFixed(3);
