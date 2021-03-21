@@ -104,3 +104,28 @@ impl CustomersModelTrait for CustomersModel {
         &self.list[index]
     }
 }
+
+pub struct Generic {
+    emit: GenericEmitter,
+    object: database::Generic,
+}
+
+impl GenericTrait for Generic {
+    fn new(emit: GenericEmitter) -> Generic {
+        Generic {
+            emit,
+            object: database::get_generic(),
+        }
+    }
+    fn emit(&mut self) -> &mut GenericEmitter {
+        &mut self.emit
+    }
+
+    fn weekly_total(&self) -> u32 {
+        self.object.weekly_total()
+    }
+
+    fn weekly_customer(&self, customer: String) -> u32 {
+        self.object.weekly_customer(customer)
+    }
+}

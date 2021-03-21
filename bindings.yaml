@@ -46,4 +46,14 @@ objects:
           customer:
             roles: [[], [], [], []]
             type: QString
-
+    Generic:
+        type: Object
+        functions:
+            weekly_total:
+                arguments: []
+                return: quint32
+            weekly_customer:
+                arguments:
+                    - name: customer
+                      type: QString
+                return: quint32

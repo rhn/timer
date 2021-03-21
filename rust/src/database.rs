@@ -9,6 +9,7 @@ use std::sync::{ Arc, Mutex };
 
 
 use diesel::{ Connection, ExpressionMethods, RunQueryDsl, QueryDsl };
+use diesel::dsl::sum;
 use std::ops::Index;
     
 
@@ -176,5 +177,40 @@ pub fn get_customers() -> Customers {
     Customers {
         connection: CONNECTION.clone(),
         cache
+    }
+}
+
+pub struct Generic {
+    connection: Conn,
+}
+
+pub type CustomerRef = String;
+
+impl Generic {
+    pub fn weekly_total(&self) -> u32 {
+        let conn = self.connection.lock().unwrap();
+        use schema::Entries::dsl::*;
+        let ret: Result<Option<i64>, _> = Entries
+            .filter(start_time.gt((Utc::now() - Duration::days(7)).timestamp() as i32))
+            .select(sum(duration))
+            .first(&*conn); 
+        ret.unwrap().unwrap_or(0) as u32
+    }
+
+    pub fn weekly_customer(&self, target_customer: CustomerRef) -> u32 {
+        let conn = self.connection.lock().unwrap();
+        use schema::Entries::dsl::*;
+        let ret: Result<Option<i64>, _> = Entries
+            .filter(start_time.gt((Utc::now() - Duration::days(7)).timestamp() as i32))
+            .filter(customer.eq(target_customer))
+            .select(sum(duration))
+            .first(&*conn);
+        ret.unwrap().unwrap_or(0) as u32
+    }
+}
+
+pub fn get_generic() -> Generic {
+    Generic {
+        connection: CONNECTION.clone(),
     }
 }
