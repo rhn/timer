@@ -42,6 +42,10 @@ ApplicationWindow {
         id: customers
     }
 
+    Generic {
+        id: generic
+    }
+
     ColumnLayout {
         id: columnLayout1
         anchors.fill: parent
@@ -148,23 +152,34 @@ ApplicationWindow {
             }
         }
 
-        RowLayout {
+        GridLayout {
             id: rowLayout3
+            columns: 2
             Layout.fillWidth: true
 
             Label {
                 id: label3
-                text: "Day:"
+                text: "Customer:"
                 Layout.alignment: Qt.AlignLeft
             }
             Label {
                 id: label4
-                text: "0"
+                text: (generic.weekly_customer(customer.currentText) / 1000 / 60 / 60).toFixed(3)
+                Layout.alignment: Qt.AlignLeft
+                Layout.fillWidth: true
+            }
+
+            Label {
+                id: label5
+                text: "Total:"
+                Layout.alignment: Qt.AlignLeft
+            }
+            Label {
+                id: label6
+                text: (generic.weekly_total() / 1000 / 60 / 60).toFixed(3)
                 Layout.alignment: Qt.AlignLeft
                 Layout.fillWidth: true
             }
         }
-
-
     }
 }

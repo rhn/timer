@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<StopWatch>("timer", 0,1, "StopWatch");
     qmlRegisterType<EntryModel>("timer", 0,1, "TimeLogger");
     qmlRegisterType<CustomersModel>("timer", 0,1, "Customers");
+    qmlRegisterType<Generic>("timer", 0,1, "Generic");
 
     QQmlApplicationEngine engine;
     QString qml_root = QProcessEnvironment::systemEnvironment().value("QML_DATA_DIR", QML_DIR) + "/main.qml";
